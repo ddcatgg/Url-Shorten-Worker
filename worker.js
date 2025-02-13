@@ -8,7 +8,7 @@ const config = {
   overwrite_kv: false, // 允许覆盖已存在的key // Allow user to overwrite an existed key.
   snapchat_mode: false, // 短链只能访问一次(访问后就删除了) // The link will be distroyed after access.
   visit_count: false, // 使用记数(会大大增加写入的使用量, 多人共用不推荐打开) // Count visit times.
-  load_kv: false, // 从KV加载全部数据(自用推荐打开, 多人共用会看到别人的数据) // Load all from Cloudflare KV
+  load_kv: true, // 从KV加载全部数据(自用推荐打开, 多人共用会看到别人的数据) // Load all from Cloudflare KV
   system_type: "shorturl", // 系统的功能定义 // shorturl, imghost, other types {pastebin, journal}
 }
 
@@ -21,13 +21,22 @@ let index_html = "https://crazypeace.github.io/Url-Shorten-Worker/" + config.the
 let result_html = "https://crazypeace.github.io/Url-Shorten-Worker/" + config.theme + "/result.html"
 
 const html404 = `<!DOCTYPE html>
-  <html>
-  <body>
+<html>
+<head>
+    <meta http-equiv="refresh" content="1;url=https://notfound.org/en/notfound">
+    <title>404 Not Found</title>
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.location.href = "https://notfound.org/en/notfound";
+        }, 1000);
+    </script>
+</head>
+<body>
     <h1>404 Not Found.</h1>
-    <p>The url you visit is not found.</p>
-    <p> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </p>
-  </body>
-  </html>`
+    <p>The URL you visited is not found.</p>
+</body>
+</html>
+`
 
 let response_header = {
   "Content-type": "text/html;charset=UTF-8;application/json",
